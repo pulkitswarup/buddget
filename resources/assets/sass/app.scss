@@ -7,3 +7,44 @@
 
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:200,300,400);
+
+@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
+
+@mixin circleShadow($vertical) {
+	box-shadow:0 0 $vertical rgba(0,0,0,.14),0 $vertical $vertical*2 rgba(0,0,0,.28)
+}
+
+.FAB {
+	position: absolute;
+	bottom: 30px;
+	right: 60px;
+	width: 56px;
+	
+	&__action-button{
+		cursor: pointer;
+		position: absolute;
+	}
+	
+	&__action-button {
+		bottom: 0;
+		right: 0;
+		
+		&:hover {
+			.action-button__icon {
+				@include circleShadow(8px);
+			}
+		}
+	}
+}
+
+.action-button {
+	&__icon{
+		@include circleShadow(4px);
+		background-color: #F44336;
+		border-radius: 50%;
+		color: #fff;
+		padding: 16px;
+	}
+}

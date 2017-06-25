@@ -1,7 +1,6 @@
-FROM php:7.1.3-fpm
+FROM php:7.1.6-fpm-alpine
 
-RUN apt-get update && apt-get install -y libmcrypt-dev \
-    mysql-client libmagickwand-dev --no-install-recommends \
-    && pecl install imagick \
-    && docker-php-ext-enable imagick \
-    && docker-php-ext-install mcrypt pdo_mysql
+RUN apk update \
+  && apk add libmcrypt-dev \
+  && docker-php-ext-install mcrypt mysqli pdo_mysql \
+  && rm /var/cache/apk/*

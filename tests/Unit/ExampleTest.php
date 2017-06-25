@@ -15,6 +15,16 @@ class ExampleTest extends TestCase
      */
     public function testBasicTest()
     {
-        $this->assertTrue(true);
+        $this->assertTrue(false);
     }
+
+    /**
+     * @test
+     */
+     public function can_view_application()
+     {
+         $this->assertTrue(false);
+     }
+
+     
 }

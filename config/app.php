@@ -177,6 +177,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Elasticquent\ElasticquentServiceProvider::class,
+        App\Services\Validation\ValidationExtensionServiceProvider::class,
 
     ],
 
