@@ -1,0 +1,108 @@
+version: "2"
+services:
+    source:
+        build:
+            context: ./
+            dockerfile: ./docker/source.dockerfile
+        working_dir: /app/buddget
+        volumes:
+            - ./:/app/buddget
+        environment:
+            - "DB_PORT=3306"
+            - "DB_HOST=database"
+        depends_on:
+            - redis
+            - database
+            # - elasticsearch1
+            # - elasticsearch2
+    proxy:
+        image: nginx:1.13.1-alpine
+        ports:
+            - "80:80"
+        depends_on:
+            - source
+        volumes_from:
+            - source:ro
+        volumes:
+            - ./docker/nginx:/etc/nginx/conf.d
+    redis:
+        image: redis
+        volumes:
+            - rdsdata:/var/lib/redis
+    database:
+        image: mysql:5.7
+        volumes:
+          - dbdata:/var/lib/mysql
+        environment:
+          - "MYSQL_DATABASE=buddget"
+          - "MYSQL_USER=buddget"
+          - "MYSQL_PASSWORD=buddget"
+          - "MYSQL_ROOT_PASSWORD=s3cr3t"
+        ports:
+            - "3306:3306"
+    # elasticsearch1:
+    #     image: docker.elastic.co/elasticsearch/elasticsearch:5.4.0
+    #     container_name: elasticsearch1
+    #     environment:
+    #       - cluster.name=docker-cluster
+    #       - bootstrap.memory_lock=true
+    #       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    #       - "xpack.security.enabled=false"
+    #     ulimits:
+    #       memlock:
+    #         soft: -1
+    #         hard: -1
+    #       nofile:
+    #         soft: 65536
+    #         hard: 65536
+    #     mem_limit: 1g
+    #     cap_add:
+    #       - IPC_LOCK
+    #     volumes:
+    #       - esdata1:/usr/share/elasticsearch/data
+    #     ports:
+    #       - 9200:9200
+    #     networks:
+    #       - esnet
+    # elasticsearch2:
+    #     image: docker.elastic.co/elasticsearch/elasticsearch:5.4.0
+    #     environment:
+    #       - cluster.name=docker-cluster
+    #       - bootstrap.memory_lock=true
+    #       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    #       - "discovery.zen.ping.unicast.hosts=elasticsearch1"
+    #       - "xpack.security.enabled=false"
+    #     ulimits:
+    #       memlock:
+    #         soft: -1
+    #         hard: -1
+    #       nofile:
+    #         soft: 65536
+    #         hard: 65536
+    #     mem_limit: 1g
+    #     cap_add:
+    #       - IPC_LOCK
+    #     volumes:
+    #       - esdata2:/usr/share/elasticsearch/data
+    #     networks:
+    #       - esnet
+    # cerebro:
+    #     image: ludekvesely/elasticsearch-cerebro
+    #     environment:
+    #         - "ELASTICSEARCH_HOST=http://elasticsearch1:9200"
+    #     ports:
+    #         - 9000:9000
+    #     networks:
+    #         - esnet
+volumes:
+    # esdata1: 
+    #     driver: local
+    # esdata2:
+    #     driver: local
+    rdsdata:
+        driver: local
+    dbdata:
+        driver: local
+# networks:
+#     esnet:
+#         driver: bridge
