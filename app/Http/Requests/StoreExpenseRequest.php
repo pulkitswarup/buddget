@@ -27,6 +27,7 @@ class StoreExpenseRequest extends FormRequest
             'name' => 'required|max:191',
             'amount' => 'required|regex:/^\d*(\.\d{1,2})?$/',
             'category' => 'required|integer',
+            'currency' => 'required|integer',
             'purchased_date' => 'date_format:"d-m-Y"|required',
             'description' => 'sometimes|max:1000'
         ];

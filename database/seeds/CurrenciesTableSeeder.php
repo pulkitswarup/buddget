@@ -16,7 +16,9 @@ class CurrenciesTableSeeder extends Seeder
 
         // Insert records to the table
         DB::table('currencies')->insert([
-            ['state' => 'Netherlands', 'name' => 'Euro', 'symbol' => '€', 'iso_code' => 'EUR', 'unit' => 'Cent']
+            ['id'=>1, 'state' => 'Netherlands', 'name' => 'Euro', 'symbol' => '€', 'iso_code' => 'EUR', 'unit' => 'Cent'],
+            ['id'=>2, 'state' => 'United States Of America', 'name' => 'United States Dollar', 'symbol' => '$', 'iso_code' => 'USD', 'unit' => 'Cent'],
+            ['id'=>3, 'state' => 'India', 'name' => 'Rupee', 'symbol' => '₹', 'iso_code' => 'INR', 'unit' => 'paisa']
         ]);
 
     }

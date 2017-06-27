@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Group;
 use App\Expense;
 use App\Category;
+use App\Currency;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreExpenseRequest;
@@ -36,10 +37,12 @@ class ExpensesController extends Controller
     {
         $user  = auth()->user();
         $groups = $user->groups()->pluck('name', 'groups.id')->prepend('No Group', -1);
-        $category = Category::orderBy('priority')->pluck('label', 'id');
+        $categories = Category::orderBy('priority')->pluck('label', 'id');
+        $currencies = Currency::orderBy('id')->pluck('symbol', 'id');
         return view('expenses.create')->with([
-            "category" => $category, 
-            "groups" => $groups
+            "categories" => $categories, 
+            "groups" => $groups,
+            "currencies" => $currencies
         ]);
     }
 
@@ -57,25 +60,12 @@ class ExpensesController extends Controller
         $expense->description = $request->input('description');
         $expense->amount = $request->input('amount'); // Store in integer format in the database
         $expense->category_id = $request->input('category');
-        $expense->currency_id = 1;
+        $expense->currency_id = $request->input('currency');
         $expense->group_id = ($request->input('group') != -1)?$request->input('group'):(Group::getDefaultGroupId($user));
         $expense->purchased_at = $request->input('purchased_date');
         $expense->save();
 
         return redirect(route('expenses.index'))->with('success', 'Successfully added');
-    }
-
-
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
@@ -90,10 +80,13 @@ class ExpensesController extends Controller
         $expense = $user->expenses()->findOrFail($id);
 
         $groups = $user->groups()->pluck('name', 'groups.id')->prepend('No Group', -1);
-        $category = Category::orderBy('priority')->pluck('label', 'id');
+        $categories = Category::orderBy('priority')->pluck('label', 'id');
+        $currencies = Currency::orderBy('id')->pluck('symbol', 'id');
+
         return view('expenses.edit')->with([
            'expense' => $expense, 
-           'category' => $category,
+           'categories' => $categories,
+           'currencies' => $currencies,
            'groups' => $groups
         ]);
     }
@@ -113,7 +106,7 @@ class ExpensesController extends Controller
         $expense->description = $request->input('description');
         $expense->amount = $request->input('amount');
         $expense->category_id = $request->input('category');
-        $expense->currency_id = 1;
+        $expense->currency_id = $request->input('currency');
         $expense->purchased_at = $request->input('purchased_date');
         $expense->group_id = ($request->input('group') != -1)?$request->input('group'):(Group::getDefaultGroupId($user));
         $expense->save();

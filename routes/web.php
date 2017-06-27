@@ -17,9 +17,9 @@ Route::get('/aboutus', 'PagesController@aboutus')->name('aboutus');
 
 Route::get('/contact', 'PagesController@contact')->name('contact');
 
-Route::resource('expenses', 'ExpensesController');
+Route::resource('expenses', 'ExpensesController', ['except' => ['show']]);
 
-Route::resource('groups', 'GroupsController');
+Route::resource('groups', 'GroupsController', ['except' => ['show']]);
 
 Auth::routes();
 
@@ -28,4 +28,5 @@ Route::get('/password/change', 'Auth\ChangePasswordController@showChangePassword
 Route::post('/password/change', 'Auth\ChangePasswordController@change');
 
 Route::get('/user/{user}/edit', 'Auth\ManageProfileController@showManageProfileForm')->name('user.edit');
-Route::put('/user/{user}/edit', 'Auth\ManageProfileController@update');
+
+Route::put('/user/{user}', 'Auth\ManageProfileController@update')->name('user.update');

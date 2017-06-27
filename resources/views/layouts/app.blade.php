@@ -11,6 +11,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
+      <!-- Material Design fonts -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @yield('stylesheets')
     <!-- Scripts -->

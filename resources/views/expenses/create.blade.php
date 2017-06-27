@@ -28,10 +28,26 @@
 
                         <div class="form-group{{ $errors->has('amount') ? ' has-error' : '' }}">
                             <label for="amount" class="col-md-4 control-label">Amount</label>
-
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <span class="input-group-addon">€</span>
+                                    <div class="input-group-btn select" id="currency">
+                                        <div class="btn-group">
+                                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                                @php ($currency_id = old('currency'))
+                                                <span class="selected">
+                                                    @if (isset($currencies[$currency_id]))
+                                                        {{ $currencies[$currency_id] }}
+                                                    @endif
+                                                </span> <span class="caret"></span>
+                                            </button>
+                                            <input type="hidden" name="currency" class="value" value="{{ old('currency') }}">
+                                            <ul class="dropdown-menu option" role="menu">
+                                                @foreach ($currencies as $id=>$currency)
+                                                    <li id="{{ $id }}"><a href="javascript:void(0);">{{ $currency }}</a></li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
                                     <input id="amount" type="text" class="form-control" name="amount" value="{{ old('amount') }}" required placeholder="Specify the amount of the item">
                                 </div>
 
@@ -48,8 +64,8 @@
 
                             <div class="col-md-6">
                                 <select id="category" class="form-control" name="category">
-                                    @foreach ($category as $key=>$val)
-                                        <option value="{{ $key }}" {{ (old("category") == $key ? "selected":"") }}>{{ $val }}</option>
+                                    @foreach ($categories as $id=>$category)
+                                        <option value="{{ $id }}" {{ (old("category") == $id ? "selected":"") }}>{{ $category }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -124,6 +140,29 @@
        format: 'dd-mm-yyyy',
        autoclose: true,
        todayHighlight: true
-     });  
+     });
+    $('body').on('click','.option li',function(){
+        var i = $(this).parents('.select').attr('id');
+        var v = $(this).children().text();
+        var o = $(this).attr('id');
+        $('#'+i+' .selected').attr('id',o);
+        $('#'+i+' .selected').text(v);
+        $('#'+i+' .value').val(o);
+    });
+    
+    $('body').ready(function(){
+        var i = $('.option li').parents('.select').attr('id');
+        var o = $('#'+i+' .value').val();
+        if (o != '') {
+            var v = $('.option li#'+o).text();
+            $('#'+i+' .selected').attr('id',o);
+            $('#'+i+' .selected').text(v);
+        } else {
+            var v = $('.option li#1').text();
+            $('#'+i+' .selected').attr('id',1);
+            $('#'+i+' .selected').text(v);            
+        }
+    });
+
 </script>
 @endsection

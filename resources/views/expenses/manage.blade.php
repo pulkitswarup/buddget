@@ -20,7 +20,7 @@
                                     @foreach($expenses as $expense)
                                         <tr>
                                             <td>{{$expense->item_name}}</td>
-                                            <td>€ {{$expense->amount}}</td>
+                                            <td>{{$expense->currency->symbol }} {{$expense->amount}}</td>
                                             <td>{{$expense->category->label}}</td>
                                             <td>{{$expense->purchased_at}}</td>
                                             <td><a href="{{ route('expenses.edit', ['expense' => $expense->id]) }}" class="btn btn-default"><span class="glyphicon glyphicon-pencil" style="color:gray"></span></a></td>
