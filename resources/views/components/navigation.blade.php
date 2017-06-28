@@ -1,7 +1,6 @@
 <nav class="navbar navbar-inverse">
     <div class="container">
         <div class="navbar-header">
-
             <!-- Collapsed Hamburger -->
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
                 <span class="sr-only">Toggle Navigation</span>
@@ -23,7 +22,7 @@
                 @if(!Auth::guest())
                     <li><a href="{{ route('expenses.index') }}">Expenses</a></li>
                     <li><a href="{{ route('groups.index') }}">Groups</a></li>
-                    <li><a href="#">Analytics</a></li>
+                    <li><a href="#">Reports</a></li>
                 @endif
                 <li><a href="{{ route('aboutus') }}">About</a></li>
                 <li><a href="{{ route('contact') }}">Contact</a></li>
