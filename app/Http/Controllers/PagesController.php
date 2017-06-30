@@ -8,7 +8,7 @@ class PagesController extends Controller
 {
     public function index()
     {
-        $title = 'Buddget - Manage your expenses';
+        $title = 'Budgestimate';
         return view('pages.index')->with('title', $title);
     }
 

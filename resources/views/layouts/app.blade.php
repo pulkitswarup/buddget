@@ -23,7 +23,7 @@
 </head>
 <body>
     @include('components.navigation')
-    <div class="container">
+    <div>
         <div class="content">
             @include('components.messages')
         </div>
